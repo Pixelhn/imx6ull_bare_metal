@@ -2,3 +2,7 @@ a.out
 *.o
 *.bin
 *.imx
+*.elf
+*.map
+*.dis
+*.img
