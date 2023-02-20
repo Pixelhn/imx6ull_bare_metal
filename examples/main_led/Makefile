@@ -10,7 +10,7 @@ main.bin:main.elf
 	$(OBJDUMP) -D $+ > $@.dis
 
 main.elf:start.o main.o
-	$(LD) -Ttext 0X87800000 $+ -o $@ -Map $@.map
+	$(LD) -Tlds $+ -o $@ -Map $@.map
 
 main.o:main.c
 	$(CC) -g -c $+ -o $@
