@@ -3,11 +3,14 @@
 
 IOMUXC_SW_MUX_CTL_PAD_*
 
+0-3 ALT*
+4   SION
+
 # PAD
 //IO属性
 IOMUXC_SW_PAD_CTL_PAD_*
 
-0       1   SER     压摆率 0低 1高
+0       1   SRE     压摆率 0低 1高
 1-2     2
 3-5     3   DSE     IO驱动能力
 6-7     2   SPEED   IO速度
@@ -35,6 +38,7 @@ CCM_CCGR0 -- CCM_CCGR6
 **PSR**
 1位
 输入状态时，IO电平
+开启SION，输出状态，任意复用均可读取IO电平
 
 **GPIOx_GDIR**
 1位
@@ -64,4 +68,13 @@ CCM_CCGR0 -- CCM_CCGR6
 1位
 中断标志位
 
+## 
+ADC_Peripheral_Access_Layer
+ADC_5HC_Peripheral_Access_Layer
 
+AIPSTZ_Peripheral_Access_Layer
+APBH_Peripheral_Access_Layer
+
+
+CAN_Peripheral_Access_Layer
+CCM_Peripheral_Access_Layer //时钟

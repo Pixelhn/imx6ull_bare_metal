@@ -1,0 +1,43 @@
+[
+  {
+    "arguments": [
+      "/home/lhn_de/imx6ull/tool/arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc",
+      "-g",
+      "-c",
+      "start.s",
+      "-o",
+      "start.o"
+    ],
+    "directory": "/home/lhn_de/imx6ull/bare_metal/examples/button_led",
+    "file": "/home/lhn_de/imx6ull/bare_metal/examples/button_led/start.s",
+    "output": "/home/lhn_de/imx6ull/bare_metal/examples/button_led/start.o"
+  },
+  {
+    "arguments": [
+      "/home/lhn_de/imx6ull/tool/arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc",
+      "-g",
+      "-c",
+      "main.c",
+      "-o",
+      "main.o"
+    ],
+    "directory": "/home/lhn_de/imx6ull/bare_metal/examples/button_led",
+    "file": "/home/lhn_de/imx6ull/bare_metal/examples/button_led/main.c",
+    "output": "/home/lhn_de/imx6ull/bare_metal/examples/button_led/main.o"
+  },
+  {
+    "arguments": [
+      "/home/lhn_de/imx6ull/tool/arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc",
+      "-g",
+      "-c",
+      "button.c",
+      "-o",
+      "button.o",
+      "-I",
+      "../../include"
+    ],
+    "directory": "/home/lhn_de/imx6ull/bare_metal/examples/button_led",
+    "file": "/home/lhn_de/imx6ull/bare_metal/examples/button_led/button.c",
+    "output": "/home/lhn_de/imx6ull/bare_metal/examples/button_led/button.o"
+  }
+]

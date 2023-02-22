@@ -6,3 +6,4 @@ a.out
 *.map
 *.dis
 *.img
+.cache

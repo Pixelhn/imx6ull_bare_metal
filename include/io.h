@@ -31,8 +31,9 @@
 #ifndef _FSL_IOMUXC_H_
 #define _FSL_IOMUXC_H_
 
-#include "fsl_common.h"
-
+#include "cc.h"
+#include "muxc.h"
+#include "pad.h"
 /*!
  * @addtogroup iomuxc_driver
  * @{
@@ -47,7 +48,7 @@
 /*! @name Driver version */
 /*@{*/
 /*! @brief IOMUXC driver version 2.0.0. */
-#define FSL_IOMUXC_DRIVER_VERSION (MAKE_VERSION(2, 0, 0))
+//#define FSL_IOMUXC_DRIVER_VERSION (MAKE_VERSION(2, 0, 0))
 /*@}*/
 /*
 
