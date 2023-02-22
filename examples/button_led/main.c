@@ -23,7 +23,7 @@ void gpio_init()
 
 uint32_t gpio_get()
 {
-    return GPIO4_DR & ~(1 << 20); 
+    return GPIO4_DR & (1 << 20); 
 }
 
 void gpio_set(int val)
