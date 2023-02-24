@@ -1,5 +1,3 @@
-#include "cc.h"
-
 #define CCGR_CLOSE_MODE 0X00
 #define CCGR_RUN_MODE 0X00
 #define CCGR_OPEN_MODE 0X11

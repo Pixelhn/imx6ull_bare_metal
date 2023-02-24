@@ -31,9 +31,8 @@
 #ifndef _FSL_IOMUXC_H_
 #define _FSL_IOMUXC_H_
 
-#include "cc.h"
-#include "muxc.h"
-#include "pad.h"
+#include "io/muxc.h"
+#include "io/pad.h"
 /*!
  * @addtogroup iomuxc_driver
  * @{

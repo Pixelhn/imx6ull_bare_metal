@@ -1,6 +1,5 @@
 #include "button.h"
 #include "imx6ull_fire_mini.h"
-#include "irq.h"
 
 void button_init()
 {

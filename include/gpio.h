@@ -1,6 +1,4 @@
 
-#include "cc.h"
-
 /*!
  * @addtogroup GPIO_Peripheral_Access_Layer GPIO Peripheral Access Layer
  * @{

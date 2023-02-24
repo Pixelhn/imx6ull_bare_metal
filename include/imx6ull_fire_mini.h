@@ -1,5 +1,7 @@
-#include "io.h"
-#include "ccm.h"
+#include "cc.h"
+#include "io/io.h"
+#include "irq/irq.h"
+#include "ccm/ccm.h"
 
 #include "gpio.h"
 

@@ -34,9 +34,8 @@
 #ifndef __CORE_CA7_H_GENERIC
 #define __CORE_CA7_H_GENERIC
 
-#include "cc.h"
-#include "cp15.h"
-#include "cmsis_gcc.h"
+#include "irq/cp15.h"
+#include "irq/cmsis_gcc.h"
 #include <string.h>
 
 
