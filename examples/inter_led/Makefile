@@ -12,7 +12,7 @@ main.bin:main.elf
 	$(OBJDUMP) -D $+ > $@.dis
 
 main.elf:start.o main.o irq_table.o gpio.o
-	$(LD) -Tlds.lds $+ -o $@ -Map $@.map
+	$(LD) -T../../boot/imx6ull.lds $+ -o $@ -Map $@.map
 
 main.o:main.c
 	$(CC) -g -c $+ -o $@ -I $(INCLUDR) 
@@ -23,7 +23,7 @@ irq_table.o:irq_table.c
 gpio.o:../../driver/gpio/gpio.c
 	$(CC) -g -c $+ -o $@ -I $(INCLUDR) -march=armv7-a
 
-start.o:start.s
+start.o:../../boot/start.s
 	$(CC) -g -c $+ -o $@
 
 

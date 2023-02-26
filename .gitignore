@@ -8,3 +8,4 @@ a.out
 *.img
 .cache
 other/*
+compile_commands.json

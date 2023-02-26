@@ -34,12 +34,14 @@ void delay(volatile unsigned int n)
 void led_init()
 {
     gpio_init(D4_LED, 1, IOMUXC_GPIO1_IO04_GPIO1_IO04);
-
     gpio_init(D5_LED, 1, IOMUXC_CSI_HSYNC_GPIO4_IO20);
-
     gpio_init(D6_LED, 1, IOMUXC_CSI_VSYNC_GPIO4_IO19);
-
     gpio_init(D7_LED, 1, IOMUXC_SNVS_SNVS_TAMPER3_GPIO5_IO03);
+
+    gpio_write(D7_LED, 1);
+    gpio_write(D6_LED, 1);
+    gpio_write(D5_LED, 1);
+    gpio_write(D4_LED, 1);
 }
 
 
@@ -85,18 +87,14 @@ int main()
     irq_table_init();
 
     led_init();
-    gpio_write(D7_LED, 0);
-    gpio_write(4, 20, 0);
-
     button_init();
 
     while(1)
     {
 
-        gpio_write(4, 19, 0);
+        gpio_write(D7_LED, 0);
         delay(500);
-        gpio_write(4, 19, 1);
-
+        gpio_write(D7_LED, 1);
         delay(500);
     }
 }
