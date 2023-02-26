@@ -4,27 +4,22 @@
 struct irq_table_s g_irq_tables[NUMBER_OF_INT_VECTORS];
 int irqNesting;
 
+void default_irq_handler(IRQn_Type iar, void *private){while(1){}}
 
-void default_irq_handler(IRQn_Type iar, void *private)
+struct irq_table_s default_irq = 
 {
-    while(1)
-    {
+    .irq_handler = default_irq_handler,
+    .private = NULL,
 
-    }
-    return;
-}
+};
 
 int irq_table_init()
 {
     int i;
-    struct irq_table_s default_irq;
 
     GIC_Init();
     __set_VBAR(0x87800000);
     irqNesting = 0;
-
-    default_irq.irq_handler = default_irq_handler;
-    default_irq.private = NULL;
 
     for (i = 0; i <NUMBER_OF_INT_VECTORS; i++)
     {
@@ -40,8 +35,19 @@ int irq_table_register(IRQn_Type iar, struct irq_table_s *irq)
         return -1;
     if (irq->irq_handler == NULL)
         return -1;
-
+    GIC_EnableIRQ(iar);
     g_irq_tables[iar] = *irq;
+
+    return 0;
+}
+
+int irq_table_unregister(IRQn_Type iar)
+{
+    if (iar < 0 || iar >= NUMBER_OF_INT_VECTORS)
+        return -1;
+
+    GIC_DisableIRQ(iar);
+    g_irq_tables[iar] = default_irq;
 
     return 0;
 }

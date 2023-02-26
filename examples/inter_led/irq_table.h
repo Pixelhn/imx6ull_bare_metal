@@ -15,5 +15,6 @@ int irq_table_init();
 
 int irq_table_register(IRQn_Type iar, struct irq_table_s *irq);
 
+int irq_table_unregister(IRQn_Type iar);
 
 #endif

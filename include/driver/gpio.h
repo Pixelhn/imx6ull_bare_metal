@@ -1,7 +1,24 @@
 #ifndef __GPIO_H__
 #define __GPIO_H__
 
-int gpio_init(uint8_t gpio, uint8_t io, uint8_t gdir,
+typedef enum
+{
+  INPUT_GPIO = 0,
+  OUTPUT_GPIO = 1,
+}gdir_e;
+
+typedef enum _gpio_interrupt_mode
+{
+    kGPIO_NoIntmode = 0U, /*!< Set current pin general IO functionality.*/
+    kGPIO_IntLowLevel = 1U, /*!< Set current pin interrupt is low-level sensitive.*/
+    kGPIO_IntHighLevel = 2U, /*!< Set current pin interrupt is high-level sensitive.*/
+    kGPIO_IntRisingEdge = 3U, /*!< Set current pin interrupt is rising-edge sensitive.*/
+    kGPIO_IntFallingEdge = 4U, /*!< Set current pin interrupt is falling-edge sensitive.*/
+    kGPIO_IntRisingOrFallingEdge = 5U, /*!< Enable the edge select bit to override the ICR register's configuration.*/
+} gpio_interrupt_mode_t;
+
+
+int gpio_init(uint8_t gpio, uint8_t io, gdir_e gdir,
                                         uint32_t muxRegister,
                                         uint32_t muxMode,
                                         uint32_t inputRegister,
@@ -12,6 +29,10 @@ void gpio_write(uint8_t gpio, uint8_t io, int value);
 
 int gpio_read(uint8_t gpio, uint8_t io);
 
+int gpio_set_inter(uint8_t gpio, uint8_t io, gpio_interrupt_mode_t mode);
+void gpio_enable_inter(uint8_t gpio, uint8_t io);
+void gpio_disable_inter(uint8_t gpio, uint8_t io);
+void gpio_clear_inter(uint8_t gpio, uint8_t io);
 
 /*!
  * @addtogroup GPIO_Peripheral_Access_Layer GPIO Peripheral Access Layer

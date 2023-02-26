@@ -6,7 +6,7 @@
 #define D4_LED      1, 4
 #define D5_LED      4, 20
 #define D6_LED      4, 19
-#define D7_LED      5, 13
+#define D7_LED      5, 3
 
 
 #endif
