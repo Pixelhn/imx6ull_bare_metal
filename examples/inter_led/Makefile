@@ -11,16 +11,16 @@ main.bin:main.elf
 	$(OBJCOPY) -O binary -S -g $+ $@
 	$(OBJDUMP) -D $+ > $@.dis
 
-main.elf:start.o main.o button.o irq_table.o
+main.elf:start.o main.o irq_table.o gpio.o
 	$(LD) -Tlds.lds $+ -o $@ -Map $@.map
 
 main.o:main.c
 	$(CC) -g -c $+ -o $@ -I $(INCLUDR) 
 
-button.o:button.c
+irq_table.o:irq_table.c
 	$(CC) -g -c $+ -o $@ -I $(INCLUDR) 
 
-irq_table.o:irq_table.c
+gpio.o:../../driver/gpio/gpio.c
 	$(CC) -g -c $+ -o $@ -I $(INCLUDR) 
 
 start.o:start.s

@@ -8,9 +8,9 @@ int gpio_init(uint8_t gpio, uint8_t io, uint8_t gdir,
                                         uint32_t inputDaisy,
                                         uint32_t configRegister);
 
-void gpio_set(uint8_t gpio, uint8_t io, int value);
+void gpio_write(uint8_t gpio, uint8_t io, int value);
 
-int gpio_get(uint8_t gpio, uint8_t io);
+int gpio_read(uint8_t gpio, uint8_t io);
 
 
 /*!

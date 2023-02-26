@@ -1,12 +1,10 @@
 #include "main.h"
 #include "imx6ull_fire_mini.h"
 
-#include "button.h"
 #include "irq_table.h"
 
 void clk_enable()
 {
-    CCM_CCGR3 = 0XFFFFFFFF;
     CCM->CCGR0 = 0XFFFFFFFF;
     CCM->CCGR1 = 0XFFFFFFFF;
     CCM->CCGR2 = 0XFFFFFFFF;
@@ -14,34 +12,6 @@ void clk_enable()
     CCM->CCGR4 = 0XFFFFFFFF;
     CCM->CCGR5 = 0XFFFFFFFF; 
     CCM->CCGR6 = 0XFFFFFFFF;  
-}
-
-void mux_set()
-{
-    MUX_CTL_PAD_CSI_HSYNC = 0x5;
-}
-
-void pad_set()
-{
-    PAD_CTL_PAD_CSI_HSYNC = 0X10B0;
-}
-
-void gpio_init()
-{
-    GPIO4_GDIR |= (1 << 20);
-}
-
-uint32_t gpio_get()
-{
-    return GPIO4_DR & (1 << 20); 
-}
-
-void gpio_set(int val)
-{
-    if(val)
-        GPIO4_DR |= (1 << 20);
-    else
-        GPIO4_DR &= ~(1 << 20); 
 }
 
 void delay_s(volatile unsigned int n)
@@ -62,31 +32,49 @@ void delay(volatile unsigned int n)
 
 void led_init()
 {
-    IOMUXC_SetPinMux(IOMUXC_GPIO1_IO04_GPIO1_IO04, 0);
+    gpio_init(1, 4, 1, IOMUXC_GPIO1_IO04_GPIO1_IO04);//D4
 
-    IOMUXC_SetPinConfig(IOMUXC_GPIO1_IO04_GPIO1_IO04, LED_PAD);
-    GPIO1->GDIR |= (1 << 4);
+    gpio_init(4, 20, 1, IOMUXC_CSI_HSYNC_GPIO4_IO20);
+
+    gpio_init(4, 19, 1, IOMUXC_CSI_VSYNC_GPIO4_IO19);
+
+    gpio_init(5, 3, 1, IOMUXC_SNVS_SNVS_TAMPER3_GPIO5_IO03);
+}
+
+int button_init()
+{
+    gpio_init(5, 1, 0, IOMUXC_SNVS_SNVS_TAMPER1_GPIO5_IO01);
 }
 
 int main()
 {
+    int c=0;
     clk_enable();
-    mux_set();
-    pad_set();
-    gpio_init();
-
     irq_table_init();
+
     button_init();
     led_init();
 
     while(1)
     {
-        gpio_set(0);
-        GPIO1->DR &= ~(1 << 4);
-        delay(500);
+        if (gpio_read(5, 1))
+        {
+            while(gpio_read(5, 1));
 
-        gpio_set(1);
-        GPIO1->DR |= (1 << 4);
-        delay(500);
+            if (gpio_read(1, 4))
+            {
+                gpio_write(1, 4, 0);
+                gpio_write(4, 20, 0);
+                gpio_write(4, 19, 0);
+                gpio_write(5,3, 0);
+            }
+            else
+            {
+                gpio_write(1, 4, 1);
+                gpio_write(4, 20, 1);
+                gpio_write(4, 19, 1);
+                gpio_write(5,3, 1);
+            }
+        }
     }
 }

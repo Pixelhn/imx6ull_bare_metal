@@ -41,7 +41,7 @@ int gpio_init(uint8_t gpio, uint8_t io, uint8_t gdir,
     return 0;
 }
 
-void gpio_set(uint8_t gpio, uint8_t io, int value)
+void gpio_write(uint8_t gpio, uint8_t io, int value)
 {
     if (gpio > 5 || io > 32)
         return;
@@ -54,10 +54,10 @@ void gpio_set(uint8_t gpio, uint8_t io, int value)
     return; 
 }
 
-int gpio_get(uint8_t gpio, uint8_t io)
+int gpio_read(uint8_t gpio, uint8_t io)
 {
     if (gpio > 5 || io > 32)
         return -1;
 
-    return g_GPIO[gpio]->DR & (1 << 20); 
+    return g_GPIO[gpio]->DR & (1 << io); 
 }
