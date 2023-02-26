@@ -117,7 +117,7 @@ int main()
 {
     int c=0;
     clk_enable();
-    //clk_init();
+    clk_init();
     irq_table_init();
 
     led_init();
