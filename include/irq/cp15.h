@@ -1,3 +1,7 @@
+#ifndef __CP15_H__
+#define __CP15_H__
+
+
 #define __STRINGIFY(x) #x
 
 #define __MCR(coproc, opcode_1, src, CRn, CRm, opcode_2)                          \
@@ -15,3 +19,5 @@
                     : "=r" (__dst) );                                             \
     __dst;                                                                        \
   })
+
+  #endif

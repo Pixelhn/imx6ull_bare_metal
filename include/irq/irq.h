@@ -1,3 +1,6 @@
+#ifndef __IRQ_H__
+#define __IRQ_H__
+
 /* ----------------------------------------------------------------------------
    -- Interrupt vector numbers
    ---------------------------------------------------------------------------- */
@@ -189,3 +192,5 @@ typedef enum IRQn {
 /*!
  * @}
  */ /* end of group Cortex_Core_Configuration */
+
+ #endif

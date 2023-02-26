@@ -1,3 +1,6 @@
+#ifndef __MUXC_H__
+#define __MUXC_H__
+
 /* ----------------------------------------------------------------------------
    -- IOMUXC Peripheral Access Layer
    ---------------------------------------------------------------------------- */
@@ -152,3 +155,4 @@ typedef struct {
 /*!
  * @}
  */ /* end of group IOMUXC_Peripheral_Access_Layer */
+ #endif

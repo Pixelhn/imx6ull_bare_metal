@@ -1,3 +1,5 @@
+#ifndef __GPIO_H__
+#define __GPIO_H__
 
 /*!
  * @addtogroup GPIO_Peripheral_Access_Layer GPIO Peripheral Access Layer
@@ -193,3 +195,4 @@ typedef struct {
 /*!
  * @}
  */ /* end of group GPIO_Peripheral_Access_Layer */
+ #endif

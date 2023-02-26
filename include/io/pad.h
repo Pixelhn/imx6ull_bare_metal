@@ -1,16 +1,6 @@
+#ifndef __PAD_H__
+#define __PAD_H__
 
-
-#define SRE_0_Slow_Slew_Rate 0x0U
-#define SRE_1_Fast_Slew_Rate 0x1U
-
-#define DSE_0_output_driver_disabled 0X000U
-#define DSE_1_R0_1  0X001U
-#define DSE_2_R0_2  0X010U
-#define DSE_3_R0_3  0X011U
-#define DSE_4_R0_4  0X100U
-#define DSE_5_R0_5  0X101U
-#define DSE_6_R0_6  0X110U
-#define DSE_7_R0_7  0X111U
 /*!
  * @addtogroup IOMUXC_SNVS_Register_Masks IOMUXC_SNVS Register Masks
  * @{
@@ -67,3 +57,46 @@
 /*!
  * @}
  */ /* end of group IOMUXC_SNVS_Register_Masks */
+
+//压摆率
+#define SRE_SLOW    IOMUXC_SNVS_SW_PAD_CTL_PAD_SRE(0)
+#define SRE_FAST    IOMUXC_SNVS_SW_PAD_CTL_PAD_SRE(1)
+
+//IO驱动能力
+#define DSE_0_R0_0  IOMUXC_SNVS_SW_PAD_CTL_PAD_DSE(0)
+#define DSE_1_R0_1  IOMUXC_SNVS_SW_PAD_CTL_PAD_DSE(1)
+#define DSE_2_R0_2  IOMUXC_SNVS_SW_PAD_CTL_PAD_DSE(2)
+#define DSE_3_R0_3  IOMUXC_SNVS_SW_PAD_CTL_PAD_DSE(3)
+#define DSE_4_R0_4  IOMUXC_SNVS_SW_PAD_CTL_PAD_DSE(4)
+#define DSE_5_R0_5  IOMUXC_SNVS_SW_PAD_CTL_PAD_DSE(5)
+#define DSE_6_R0_6  IOMUXC_SNVS_SW_PAD_CTL_PAD_DSE(6)
+#define DSE_7_R0_7  IOMUXC_SNVS_SW_PAD_CTL_PAD_DSE(7)
+
+//IO速度
+#define SPEED_50    IOMUXC_SNVS_SW_PAD_CTL_PAD_SPEED(0)
+#define SPEED_100   IOMUXC_SNVS_SW_PAD_CTL_PAD_SPEED(1)
+#define SPEED_200   IOMUXC_SNVS_SW_PAD_CTL_PAD_SPEED(3)
+
+//开路输出(输出)
+#define ODE_ENABLE  IOMUXC_SNVS_SW_PAD_CTL_PAD_ODE(1)
+#define ODE_DISABL  IOMUXC_SNVS_SW_PAD_CTL_PAD_ODE(0)
+
+//使能PUE PUS
+#define PKE_ENABLE  IOMUXC_SNVS_SW_PAD_CTL_PAD_PKE(1)
+#define PKE_DISABL  IOMUXC_SNVS_SW_PAD_CTL_PAD_PKE(0)
+
+//保持器(输入)与上下拉选择
+#define PUE_KEEP    IOMUXC_SNVS_SW_PAD_CTL_PAD_PUE(0)
+#define PUE_DOUP    IOMUXC_SNVS_SW_PAD_CTL_PAD_PUE(1)
+
+//上下拉选择
+#define PUS_100_DOWN    IOMUXC_SNVS_SW_PAD_CTL_PAD_PUS(0)
+#define PUS_47_UP       IOMUXC_SNVS_SW_PAD_CTL_PAD_PUS(1)
+#define PUS_100_UP      IOMUXC_SNVS_SW_PAD_CTL_PAD_PUS(2)
+#define PUS_22_UP       IOMUXC_SNVS_SW_PAD_CTL_PAD_PUS(3)
+
+//迟滞比较器(输入)
+#define HYS_ENABLE  IOMUXC_SNVS_SW_PAD_CTL_PAD_HYS(1)
+#define HYS_DISABL  IOMUXC_SNVS_SW_PAD_CTL_PAD_HYS(0)
+
+ #endif

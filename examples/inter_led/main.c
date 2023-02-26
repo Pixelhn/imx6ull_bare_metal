@@ -1,9 +1,19 @@
 #include "main.h"
+#include "imx6ull_fire_mini.h"
+
 #include "button.h"
+#include "irq_table.h"
 
 void clk_enable()
 {
     CCM_CCGR3 = 0XFFFFFFFF;
+    CCM->CCGR0 = 0XFFFFFFFF;
+    CCM->CCGR1 = 0XFFFFFFFF;
+    CCM->CCGR2 = 0XFFFFFFFF;
+    CCM->CCGR3 = 0XFFFFFFFF;
+    CCM->CCGR4 = 0XFFFFFFFF;
+    CCM->CCGR5 = 0XFFFFFFFF; 
+    CCM->CCGR6 = 0XFFFFFFFF;  
 }
 
 void mux_set()
@@ -50,6 +60,14 @@ void delay(volatile unsigned int n)
     }
 }
 
+void led_init()
+{
+    IOMUXC_SetPinMux(IOMUXC_GPIO1_IO04_GPIO1_IO04, 0);
+
+    IOMUXC_SetPinConfig(IOMUXC_GPIO1_IO04_GPIO1_IO04, LED_PAD);
+    GPIO1->GDIR |= (1 << 4);
+}
+
 int main()
 {
     clk_enable();
@@ -57,17 +75,18 @@ int main()
     pad_set();
     gpio_init();
 
+    irq_table_init();
     button_init();
+
 
     while(1)
     {
-        if (button_get())
-        {
-            while (button_get());
-            if(gpio_get())
-                gpio_set(0);
-            else
-                gpio_set(1);
-        }
+        gpio_set(0);
+        GPIO1->DR &= -(1 << 4);
+        delay(500);
+
+        gpio_set(1);
+        GPIO1->DR |= (1 << 4);
+        delay(500);
     }
 }
