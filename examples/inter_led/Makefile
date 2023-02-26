@@ -12,7 +12,7 @@ main.bin:main.elf
 	$(OBJDUMP) -D $+ > $@.dis
 
 main.elf:start.o main.o button.o
-	$(LD) -Tlds $+ -o $@ -Map $@.map
+	$(LD) -Tlds.lds $+ -o $@ -Map $@.map
 
 main.o:main.c
 	$(CC) -g -c $+ -o $@ -I $(INCLUDR) 

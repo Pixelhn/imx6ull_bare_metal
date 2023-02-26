@@ -24,4 +24,7 @@ parted -s ${BOOT_BIN} mklabel msdos
 
 dd if=boot.imx of=boot.img bs=512 seek=2 conv=notrunc
 
-cp boot.img $IMX
+if [ -b $2 ];
+then
+    sudo dd if=boot.img of=/dev/sda
+fi
