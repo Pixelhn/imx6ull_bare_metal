@@ -9,6 +9,7 @@ _start:
     ldr     pc, =loop           /* Supervisor Call        SWI(Linux系统调用内陷内核)*/
     ldr     pc, =loop           /* Prefetch abort         预取指令出错*/
     ldr     pc, =loop           /* Data abort             数据访问出错*/
+    ldr     pc, =loop           /* unused */
     ldr     pc, =IRQ_Handler    /* IRQ interrupt          */
     ldr     pc, =loop           /* FIQ interrupt          快速中断*/
 
@@ -42,6 +43,8 @@ Reset_Handler:
 
     ldr sp, =0X80200000   /* 设置栈指针 */
     b main
+
+loop:
     ldr r0, =loop
     bx  r0
 
@@ -77,7 +80,3 @@ IRQ_Handler:
     pop     {r0-r3, r12}
     pop     {lr}
     subs    pc, lr, #4
-
-loop:
-    ldr r0, =loop
-    bx  r0

@@ -66,7 +66,7 @@ int gpio_read(uint8_t gpio, uint8_t io)
 
 int gpio_set_inter(uint8_t gpio, uint8_t io, gpio_interrupt_mode_t mode)
 {
-    volatile uint32_t icr;
+    volatile uint32_t *icr;
     uint8_t io_tmp = io;
 
     if (gpio > 5 || io > 32)
@@ -76,27 +76,27 @@ int gpio_set_inter(uint8_t gpio, uint8_t io, gpio_interrupt_mode_t mode)
 
     if (io < 16)
     {
-        icr = g_GPIO[gpio]->ICR1;
+        icr = &g_GPIO[gpio]->ICR1;
     }
     else
     {
-        icr = g_GPIO[gpio]->ICR2;
+        icr = &g_GPIO[gpio]->ICR2;
         io_tmp -= 16;
     }
 
     switch(mode)
     {
         case(kGPIO_IntLowLevel):
-            icr &= ~(3U << (2 * io_tmp));
+            *icr &= ~(3U << (2 * io_tmp));
             break;
         case(kGPIO_IntHighLevel):
-            icr = (icr & (~(3U << (2 * io_tmp)))) | (1U << (2 * io_tmp));
+            *icr = (*icr & (~(3U << (2 * io_tmp)))) | (1U << (2 * io_tmp));
             break;
         case(kGPIO_IntRisingEdge):
-            icr = (icr & (~(3U << (2 * io_tmp)))) | (2U << (2 * io_tmp));
+            *icr = (*icr & (~(3U << (2 * io_tmp)))) | (2U << (2 * io_tmp));
             break;
         case(kGPIO_IntFallingEdge):
-            icr |= (3U << (2 * io_tmp));
+            *icr |= (3U << (2 * io_tmp));
             break;
         case(kGPIO_IntRisingOrFallingEdge):
             g_GPIO[gpio]->EDGE_SEL |= (1U << io);
@@ -104,8 +104,6 @@ int gpio_set_inter(uint8_t gpio, uint8_t io, gpio_interrupt_mode_t mode)
         default:
             break;
     }
-
-    gpio_enable_inter(gpio, io);
 
     return 0;
 }

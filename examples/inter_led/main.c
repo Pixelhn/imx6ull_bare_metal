@@ -68,12 +68,14 @@ int button_init()
     struct irq_table_s irq;
 
     gpio_init(SW2_KEY, 0, IOMUXC_SNVS_SNVS_TAMPER1_GPIO5_IO01);
-    gpio_set_inter(SW2_KEY, kGPIO_IntRisingOrFallingEdge);
+    gpio_set_inter(SW2_KEY, kGPIO_IntRisingEdge);
 
     irq.irq_handler = irq_hand;
-    irq.private = NULL;
+    irq.private = 0;
 
     irq_table_register(GPIO5_Combined_0_15_IRQn, &irq);
+
+    gpio_enable_inter(SW2_KEY);
 }
 
 int main()
@@ -84,16 +86,17 @@ int main()
 
     led_init();
     gpio_write(D7_LED, 0);
+    gpio_write(4, 20, 0);
 
     button_init();
 
     while(1)
     {
-        gpio_write(4, 20, 0);
+
         gpio_write(4, 19, 0);
         delay(500);
-        gpio_write(4, 20, 1);
         gpio_write(4, 19, 1);
+
         delay(500);
     }
 }

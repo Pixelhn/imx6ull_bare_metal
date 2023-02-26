@@ -4,7 +4,7 @@
 struct irq_table_s g_irq_tables[NUMBER_OF_INT_VECTORS];
 int irqNesting;
 
-void default_irq_handler(IRQn_Type iar, void *private){while(1){}}
+void default_irq_handler(IRQn_Type iar, void *private){while(0){}}
 
 struct irq_table_s default_irq = 
 {
@@ -18,12 +18,12 @@ int irq_table_init()
     int i;
 
     GIC_Init();
-    __set_VBAR(0x87800000);
+    __set_VBAR((uint32_t)0x87800000);
     irqNesting = 0;
 
     for (i = 0; i <NUMBER_OF_INT_VECTORS; i++)
     {
-        irq_table_register(i, &default_irq);
+        irq_table_unregister(i);
     }
 
     return 0;
