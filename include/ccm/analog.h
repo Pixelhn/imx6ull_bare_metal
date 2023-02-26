@@ -1,3 +1,6 @@
+#ifndef __ANALOG_H__
+#define __ANALOG_H__
+
 /* ----------------------------------------------------------------------------
    -- CCM_ANALOG Peripheral Access Layer
    ---------------------------------------------------------------------------- */
@@ -13,6 +16,7 @@ typedef struct {
   __IO uint32_t PLL_ARM_SET;                       /**< Analog ARM PLL control Register, offset: 0x4 */
   __IO uint32_t PLL_ARM_CLR;                       /**< Analog ARM PLL control Register, offset: 0x8 */
   __IO uint32_t PLL_ARM_TOG;                       /**< Analog ARM PLL control Register, offset: 0xC */
+  
   __IO uint32_t PLL_USB1;                          /**< Analog USB1 480MHz PLL Control Register, offset: 0x10 */
   __IO uint32_t PLL_USB1_SET;                      /**< Analog USB1 480MHz PLL Control Register, offset: 0x14 */
   __IO uint32_t PLL_USB1_CLR;                      /**< Analog USB1 480MHz PLL Control Register, offset: 0x18 */
@@ -1703,3 +1707,4 @@ typedef struct {
 /*!
  * @}
  */ /* end of group CCM_ANALOG_Peripheral_Access_Layer */
+ #endif

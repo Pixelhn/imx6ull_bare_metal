@@ -105,6 +105,7 @@ int gpio_set_inter(uint8_t gpio, uint8_t io, gpio_interrupt_mode_t mode)
             break;
     }
 
+    gpio_enable_inter(gpio, io);
     return 0;
 }
 

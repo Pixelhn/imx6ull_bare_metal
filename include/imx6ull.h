@@ -7,6 +7,7 @@
 #include "ccm/ccm.h"
 
 #include "driver/gpio.h"
+#include "driver/clk.h"
 
 
 #endif

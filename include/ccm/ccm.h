@@ -1,3 +1,8 @@
+#ifndef __CCM_H__
+#define __CCM_H__
+
+#include "analog.h"
+
 #define CCGR_CLOSE_MODE 0X00
 #define CCGR_RUN_MODE 0X00
 #define CCGR_OPEN_MODE 0X11
@@ -866,3 +871,4 @@ typedef struct {
 /*!
  * @}
  */ /* end of group CCM_Peripheral_Access_Layer */
+ #endif
