@@ -6,7 +6,7 @@
 #include "irq/irq.h"
 #include "ccm/ccm.h"
 
-#include "gpio.h"
+#include "driver/gpio.h"
 
 
 #define SW2_KEY     IOMUXC_SNVS_SNVS_TAMPER1_GPIO5_IO01

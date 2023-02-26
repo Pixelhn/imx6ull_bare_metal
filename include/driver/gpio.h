@@ -1,6 +1,18 @@
 #ifndef __GPIO_H__
 #define __GPIO_H__
 
+int gpio_init(uint8_t gpio, uint8_t io, uint8_t gdir,
+                                        uint32_t muxRegister,
+                                        uint32_t muxMode,
+                                        uint32_t inputRegister,
+                                        uint32_t inputDaisy,
+                                        uint32_t configRegister);
+
+void gpio_set(uint8_t gpio, uint8_t io, int value);
+
+int gpio_get(uint8_t gpio, uint8_t io);
+
+
 /*!
  * @addtogroup GPIO_Peripheral_Access_Layer GPIO Peripheral Access Layer
  * @{

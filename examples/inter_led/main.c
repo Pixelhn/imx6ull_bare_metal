@@ -77,12 +77,12 @@ int main()
 
     irq_table_init();
     button_init();
-
+    led_init();
 
     while(1)
     {
         gpio_set(0);
-        GPIO1->DR &= -(1 << 4);
+        GPIO1->DR &= ~(1 << 4);
         delay(500);
 
         gpio_set(1);
