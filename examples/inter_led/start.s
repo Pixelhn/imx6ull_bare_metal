@@ -46,6 +46,37 @@ Reset_Handler:
     bx  r0
 
 IRQ_Handler:
+    push    {lr}                         /* Save return address+4                                */
+    push    {r0-r3, r12}                 /* Push caller save registers                           */
+
+    mrs     r0, spsr                     /* Save SPRS to allow interrupt reentry                 */
+    push    {r0}
+
+    mrc     P15, 4, r1, C15, C0, 0       /* Get GIC base address                                 */
+    add     r1, r1, #0x2000              /* r1: GICC base address                                */
+    ldr     r0, [r1, #0xC]               /* r0: IAR                                              */
+
+    push    {r0, r1}
+
+    cps     #0x13                        /* Change to Supervisor mode to allow interrupt reentry */
+
+    push    {lr}                         /* Save Supervisor lr                                   */
+    ldr     r2, =irq_table_run
+    blx     r2                           /* Call SystemIrqHandler with param GCC                 */
+    pop     {lr}
+
+    cps     #0x12                        /* Back to IRQ mode                                     */
+
+    pop     {r0, r1}
+
+    str     r0, [r1, #0x10]              /* Now IRQ handler finished: write to EOIR              */
+
+    pop     {r0}
+    msr     spsr_cxsf, r0
+
+    pop     {r0-r3, r12}
+    pop     {lr}
+    subs    pc, lr, #4
 
 loop:
     ldr r0, =loop

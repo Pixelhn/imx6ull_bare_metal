@@ -1,7 +1,8 @@
-#include "main.h"
-#include "imx6ull_fire_mini.h"
+#include "board/fire_mini.h"
+#include "imx6ull.h"
 
 #include "irq_table.h"
+
 
 void clk_enable()
 {

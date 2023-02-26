@@ -1,5 +1,5 @@
 #include "irq_table.h"
-#include "imx6ull_fire_mini.h"
+#include "imx6ull.h"
 
 struct irq_table_s g_irq_tables[NUMBER_OF_INT_VECTORS];
 int irqNesting;
@@ -56,11 +56,14 @@ void irq_table_run(unsigned int giccIar)
 	 	return;
    }
  
+  __enable_irq();      /* Support nesting interrupt */
    irqNesting++;	/* 中断嵌套计数器加一 */
 
    /* 根据传递进来的中断号，在irqTable中调用确定的中断服务函数*/
    g_irq_tables[intNum].irq_handler(intNum, g_irq_tables[intNum].private);
  
    irqNesting--;	/* 中断执行完成，中断嵌套寄存器减一 */
+  __disable_irq();
 
 }
+

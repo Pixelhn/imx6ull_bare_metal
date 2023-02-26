@@ -1056,14 +1056,17 @@ FORCEDINLINE __STATIC_INLINE void MMU_Enable(void)
 typedef struct
 {
         uint32_t RESERVED0[1024];
+  //分发器
   __IOM uint32_t D_CTLR;                 /*!< Offset: 0x1000 (R/W) Distributor Control Register */
   __IM  uint32_t D_TYPER;                /*!< Offset: 0x1004 (R/ )  Interrupt Controller Type Register */
   __IM  uint32_t D_IIDR;                 /*!< Offset: 0x1008 (R/ )  Distributor Implementer Identification Register */
         uint32_t RESERVED1[29];
   __IOM uint32_t D_IGROUPR[16];          /*!< Offset: 0x1080 - 0x0BC (R/W) Interrupt Group Registers */
         uint32_t RESERVED2[16];
+                //中断使能
   __IOM uint32_t D_ISENABLER[16];        /*!< Offset: 0x1100 - 0x13C (R/W) Interrupt Set-Enable Registers */
         uint32_t RESERVED3[16];
+                //中断禁止
   __IOM uint32_t D_ICENABLER[16];        /*!< Offset: 0x1180 - 0x1BC (R/W) Interrupt Clear-Enable Registers */
         uint32_t RESERVED4[16];
   __IOM uint32_t D_ISPENDR[16];          /*!< Offset: 0x1200 - 0x23C (R/W) Interrupt Set-Pending Registers */
@@ -1074,6 +1077,7 @@ typedef struct
         uint32_t RESERVED7[16];
   __IOM uint32_t D_ICACTIVER[16];        /*!< Offset: 0x1380 - 0x3BC (R/W) Interrupt Clear-Active Registers */
         uint32_t RESERVED8[16];
+                //某个id的优先级
   __IOM uint8_t  D_IPRIORITYR[512];      /*!< Offset: 0x1400 - 0x5FC (R/W) Interrupt Priority Registers */
         uint32_t RESERVED9[128];
   __IOM uint8_t  D_ITARGETSR[512];       /*!< Offset: 0x1800 - 0x9FC (R/W) Interrupt Targets Registers */
@@ -1101,7 +1105,9 @@ typedef struct
   __IM  uint32_t D_CIDR2;                /*!< Offset: 0x1FF8 (R/ ) Component ID2 Register */
   __IM  uint32_t D_CIDR3;                /*!< Offset: 0x1FFC (R/ ) Component ID3 Register */
 
+  //CPU接口
   __IOM uint32_t C_CTLR;                 /*!< Offset: 0x2000 (R/W) CPU Interface Control Register */
+                  //中断级数 32
   __IOM uint32_t C_PMR;                  /*!< Offset: 0x2004 (R/W) Interrupt Priority Mask Register */
   __IOM uint32_t C_BPR;                  /*!< Offset: 0x2008 (R/W) Binary Point Register */
   //保存中断号
@@ -1139,9 +1145,11 @@ FORCEDINLINE __STATIC_INLINE void GIC_Init(void)
   for (i = 0; i < irqRegs; i++)
     gic->D_ICENABLER[i] = 0xFFFFFFFFUL;
 
+  //中断级数 32
   /* Make all interrupts have higher priority */
   gic->C_PMR = (0xFFUL << (8 - __GIC_PRIO_BITS)) & 0xFFUL;
 
+  //抢占优先级与子优先级
   /* No subpriority, all priority level allows preemption */
   gic->C_BPR = 7 - __GIC_PRIO_BITS;
 
@@ -1166,6 +1174,7 @@ FORCEDINLINE __STATIC_INLINE void GIC_DisableIRQ(IRQn_Type IRQn)
   gic->D_ICENABLER[((uint32_t)(int32_t)IRQn) >> 5] = (uint32_t)(1UL << (((uint32_t)(int32_t)IRQn) & 0x1FUL));
 }
 
+//获取或失效中断号
 /* Return IRQ number (and CPU source in SGI case) */
 FORCEDINLINE __STATIC_INLINE uint32_t GIC_AcknowledgeIRQ(void)
 {
@@ -1173,7 +1182,6 @@ FORCEDINLINE __STATIC_INLINE uint32_t GIC_AcknowledgeIRQ(void)
 
   return gic->C_IAR & 0x1FFFUL;
 }
-
 /* value should be got from GIC_AcknowledgeIRQ() */
 FORCEDINLINE __STATIC_INLINE void GIC_DeactivateIRQ(uint32_t value)
 {
@@ -1182,6 +1190,7 @@ FORCEDINLINE __STATIC_INLINE void GIC_DeactivateIRQ(uint32_t value)
   gic->C_EOIR = value;
 }
 
+//当前正在运行的优先级
 FORCEDINLINE __STATIC_INLINE uint32_t GIC_GetRunningPriority(void)
 {
   GIC_Type *gic = (GIC_Type *)(__get_CBAR() & 0xFFFF0000UL);
@@ -1189,13 +1198,13 @@ FORCEDINLINE __STATIC_INLINE uint32_t GIC_GetRunningPriority(void)
   return gic->C_RPR & 0xFFUL;
 }
 
+//抢占优先级与子优先级
 FORCEDINLINE __STATIC_INLINE void GIC_SetPriorityGrouping(uint32_t PriorityGroup)
 {
   GIC_Type *gic = (GIC_Type *)(__get_CBAR() & 0xFFFF0000UL);
 
   gic->C_BPR = PriorityGroup & 0x7UL;
 }
-
 FORCEDINLINE __STATIC_INLINE uint32_t GIC_GetPriorityGrouping(void)
 {
   GIC_Type *gic = (GIC_Type *)(__get_CBAR() & 0xFFFF0000UL);
@@ -1203,13 +1212,13 @@ FORCEDINLINE __STATIC_INLINE uint32_t GIC_GetPriorityGrouping(void)
   return gic->C_BPR & 0x7UL;
 }
 
+//设置优先级 //获取优先级
 FORCEDINLINE __STATIC_INLINE void GIC_SetPriority(IRQn_Type IRQn, uint32_t priority)
 {
   GIC_Type *gic = (GIC_Type *)(__get_CBAR() & 0xFFFF0000UL);
 
   gic->D_IPRIORITYR[((uint32_t)(int32_t)IRQn)] = (uint8_t)((priority << (8UL - __GIC_PRIO_BITS)) & (uint32_t)0xFFUL);
 }
-
 FORCEDINLINE __STATIC_INLINE uint32_t GIC_GetPriority(IRQn_Type IRQn)
 {
   GIC_Type *gic = (GIC_Type *)(__get_CBAR() & 0xFFFF0000UL);

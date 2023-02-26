@@ -1,7 +1,7 @@
 #ifndef __IRQ_TABLE_H__
 #define __IRQ_TABLE_H__
 
-#include "imx6ull_fire_mini.h"
+#include "imx6ull.h"
 
 typedef void (*irq_handler_f)(IRQn_Type iar, void *private);
 

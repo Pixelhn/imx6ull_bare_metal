@@ -18,10 +18,10 @@ main.o:main.c
 	$(CC) -g -c $+ -o $@ -I $(INCLUDR) 
 
 irq_table.o:irq_table.c
-	$(CC) -g -c $+ -o $@ -I $(INCLUDR) 
+	$(CC) -g -c $+ -o $@ -I $(INCLUDR) -march=armv7-a
 
 gpio.o:../../driver/gpio/gpio.c
-	$(CC) -g -c $+ -o $@ -I $(INCLUDR) 
+	$(CC) -g -c $+ -o $@ -I $(INCLUDR) -march=armv7-a
 
 start.o:start.s
 	$(CC) -g -c $+ -o $@

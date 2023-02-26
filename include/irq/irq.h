@@ -183,7 +183,7 @@ typedef enum IRQn {
  */
 
 #define __CA7_REV                      0x0005    /**< Core revision r0p5 */
-#define __GIC_PRIO_BITS                5         /**< Number of Bits used for Priority Levels */
+#define __GIC_PRIO_BITS                5         /**< 32个中断级数 Number of Bits used for Priority Levels */
 #define __FPU_PRESENT                  1         /**< FPU present or not */
 
 #include "irq/core_ca7.h"                  /* Core Peripheral Access Layer */

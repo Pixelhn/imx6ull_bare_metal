@@ -61,3 +61,8 @@ int gpio_read(uint8_t gpio, uint8_t io)
 
     return g_GPIO[gpio]->DR & (1 << io); 
 }
+
+int gpio_inter()
+{
+    
+}
