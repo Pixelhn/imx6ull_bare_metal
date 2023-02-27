@@ -177,6 +177,10 @@ typedef unsigned long long int  u64;
 #endif
 
 
+#define VALUE_MASK_SET(registers, SET, value)  (registers & ~SET##_MASK) | SET(value)
+
+#define MASK_SET(registers, SET, value) registers = VALUE_MASK_SET(registers, SET, value)
+
 #ifdef __cplusplus
 }
 #endif
