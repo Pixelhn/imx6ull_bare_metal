@@ -29,10 +29,24 @@ void gpio_write(uint8_t gpio, uint8_t io, int value);
 
 int gpio_read(uint8_t gpio, uint8_t io);
 
-int gpio_set_inter(uint8_t gpio, uint8_t io, gpio_interrupt_mode_t mode);
+
+typedef void (*gpio_irq_f)(uint8_t gpio, uint8_t io);
+
+int gpio_set_inter(uint8_t gpio, uint8_t io, gpio_interrupt_mode_t mode, gpio_irq_f cb);
+
 void gpio_enable_inter(uint8_t gpio, uint8_t io);
 void gpio_disable_inter(uint8_t gpio, uint8_t io);
+
+int gpio_check_inter(uint8_t gpio, uint8_t io);
 void gpio_clear_inter(uint8_t gpio, uint8_t io);
+
+#define GPIO_GET_IRQ_ID(gpio, io) \
+    (io < 16)? \
+    GPIO##gpio##_Combined_0_15_IRQn : \
+    GPIO##gpio##_Combined_16_31_IRQn
+
+#define DEF_PAD_OUT (SRE_SLOW | DSE_6_R0_6 | SPEED_100 | ODE_DISABL | PKE_ENABLE | PUE_DOUP | PUS_100_DOWN | HYS_DISABL)
+#define DEF_PAD_IN  (SRE_SLOW | DSE_6_R0_6 | SPEED_100 | ODE_DISABL | PKE_DISABL | PUE_DOUP | PUS_100_DOWN | HYS_ENABLE)
 
 /*!
  * @addtogroup GPIO_Peripheral_Access_Layer GPIO Peripheral Access Layer
