@@ -34,14 +34,14 @@ void gpio_write(uint8_t gpio, uint8_t io, int value);
 int gpio_read(uint8_t gpio, uint8_t io);
 
 
-typedef void (*gpio_irq_f)(uint8_t gpio, uint8_t io);
+typedef int (*gpio_irq_f)(uint8_t gpio, uint8_t io);
 
 int gpio_set_inter(uint8_t gpio, uint8_t io, gpio_interrupt_mode_t mode, gpio_irq_f cb);
 
 void gpio_enable_inter(uint8_t gpio, uint8_t io);
+
 void gpio_disable_inter(uint8_t gpio, uint8_t io);
 
-int gpio_check_inter(uint8_t gpio, uint8_t io);
 void gpio_clear_inter(uint8_t gpio, uint8_t io);
 
 #define GPIO_GET_IRQ_ID(gpio, io) \

@@ -32,42 +32,21 @@ void led_init()
 }
 
 
-int status;
-void irq_hand(IRQn_Type iar, void *private)
+int gpio_cb(uint8_t gpio, uint8_t io)
 {
-    if (gpio_check_inter(5, 1))
+    if (GPIO_COMBINED(gpio, io) != GPIO_COMBINED(5, 1))
+        return -1;
+
+    if (gpio_read(D4_LED))
     {
-        if (status)
-        {
-            gpio_write(D4_LED, 1);
-            status = 0;
-        }
-        else
-        {
-            gpio_write(D4_LED, 0);
-            status = 1;
-        }
+        gpio_write(D4_LED, 0);
+    }
+    else
+    {
+        gpio_write(D4_LED, 1);
     }
 
-    gpio_clear_inter(SW2_KEY);
-}
-
-void gpio_cb(uint8_t gpio, uint8_t io)
-{
-    if (gpio_read(5, 1))
-    {
-        if (status)
-        {
-            gpio_write(D4_LED, 1);
-            status = 0;
-        }
-        else
-        {
-            gpio_write(D4_LED, 0);
-            status = 1;
-        }
-    }
-
+    return 0;
 }
 
 int button_init()
@@ -76,11 +55,7 @@ int button_init()
 
     gpio_init(SW2_KEY, 0, IOMUXC_SNVS_SNVS_TAMPER1_GPIO5_IO01);
     gpio_set_inter(SW2_KEY, kGPIO_IntRisingEdge, gpio_cb);
-
-    irq.irq_handler = irq_hand;
-    irq.private = 0;
-    irq_table_register(GPIO5_Combined_0_15_IRQn, &irq);
-
+    
     return 0;
 }
 
