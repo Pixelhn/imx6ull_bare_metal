@@ -17,6 +17,10 @@ typedef enum _gpio_interrupt_mode
     kGPIO_IntRisingOrFallingEdge = 5U, /*!< Enable the edge select bit to override the ICR register's configuration.*/
 } gpio_interrupt_mode_t;
 
+#define GPIO_COMBINED(gpio, io) ((((uint8_t)gpio) << 5) | ((uint8_t)io & 0X1F))
+
+#define GPIO_COMBINED_GET_GPIO(com) ((uint8_t)(com >> 5))
+#define GPIO_COMBINED_GET_IO(com) ((uint8_t)(io & 0X1F))
 
 int gpio_init(uint8_t gpio, uint8_t io, gdir_e gdir,
                                         uint32_t muxRegister,

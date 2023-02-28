@@ -24,30 +24,68 @@ struct gpio_irq_s g_gpio_irq[6];
 
 void gpio_inter_handler(IRQn_Type iar, void *private)
 {
+    uint8_t gpio, io;
+    gpio_irq_f *p = (gpio_irq_f *)private;
 
     switch (iar)
     {
         case GPIO1_Combined_0_15_IRQn:
+            gpio = 1;
+            p = g_gpio_irq[gpio].gpio_irq_00_15;
+            break;
         case GPIO1_Combined_16_31_IRQn:
-
+            gpio = 1;
+            p = g_gpio_irq[gpio].gpio_irq_16_31;
             break;
         case GPIO2_Combined_0_15_IRQn:
+            gpio = 2;
+            p = g_gpio_irq[gpio].gpio_irq_00_15;
+            break;
         case GPIO2_Combined_16_31_IRQn:
-
+            gpio = 2;
+            p = g_gpio_irq[gpio].gpio_irq_16_31;
             break;
         case GPIO3_Combined_0_15_IRQn:
+            gpio = 3;
+            p = g_gpio_irq[gpio].gpio_irq_00_15;
+            break;
         case GPIO3_Combined_16_31_IRQn:
-
+            gpio = 3;
+            p = g_gpio_irq[gpio].gpio_irq_16_31;
             break;
         case GPIO4_Combined_0_15_IRQn:
+            gpio = 4;
+            p = g_gpio_irq[gpio].gpio_irq_00_15;
+            break;
         case GPIO4_Combined_16_31_IRQn:
-
+            gpio = 4;
+            p = g_gpio_irq[gpio].gpio_irq_16_31;
             break;
         case GPIO5_Combined_0_15_IRQn:
-        case GPIO5_Combined_16_31_IRQn:
-
+            gpio = 5;
+            p = g_gpio_irq[gpio].gpio_irq_00_15;
             break;
+        case GPIO5_Combined_16_31_IRQn:
+            gpio = 5;
+            p = g_gpio_irq[gpio].gpio_irq_16_31;
+            break;
+        default:
+            return;
     }
+
+    for (io = 0; io < 16; io++)
+    {
+        if (gpio_check_inter(gpio, io))
+        {
+            if (p[io])
+                p[io](gpio, io);
+
+            gpio_clear_inter(gpio, io);
+            break;
+        }
+    }
+
+    return;
 }
 
 int gpio_init(uint8_t gpio, uint8_t io, gdir_e gdir,
@@ -109,19 +147,23 @@ int gpio_set_inter(uint8_t gpio, uint8_t io, gpio_interrupt_mode_t mode, gpio_ir
         return -1;
     
     g_GPIO[gpio]->EDGE_SEL &= ~(1U << io);
+    irq.irq_handler = gpio_inter_handler;
 
     if (io < 16)
     {
-        g_gpio_irq[gpio].gpio_irq_00_15[io] = cb;
+        g_gpio_irq[gpio].gpio_irq_00_15[io_tmp] = cb;
+        irq.private = (void *)g_gpio_irq[gpio].gpio_irq_00_15;
 
         icr = &g_GPIO[gpio]->ICR1;
     }
     else
     {
-        g_gpio_irq[gpio].gpio_irq_16_31[io] = cb;
+        io_tmp -= 16;
+
+        g_gpio_irq[gpio].gpio_irq_16_31[io_tmp] = cb;
+        irq.private = (void *)g_gpio_irq[gpio].gpio_irq_16_31;
 
         icr = &g_GPIO[gpio]->ICR2;
-        io_tmp -= 16;
     }
 
     switch(mode)
@@ -145,11 +187,7 @@ int gpio_set_inter(uint8_t gpio, uint8_t io, gpio_interrupt_mode_t mode, gpio_ir
             break;
     }
 
-
-    irq.irq_handler = gpio_inter_handler;
-    irq.private = 0;
     irq_table_register(GPIO1_Combined_16_31_IRQn, &irq);
-
     gpio_enable_inter(gpio, io);
     return 0;
 }
@@ -181,9 +219,6 @@ int gpio_check_inter(uint8_t gpio, uint8_t io)
 
 void gpio_clear_inter(uint8_t gpio, uint8_t io)
 {
-    if (gpio > 5 || io > 32)
-        return;
-    
     g_GPIO[gpio]->ISR |= (1U << io);
 
     return;
