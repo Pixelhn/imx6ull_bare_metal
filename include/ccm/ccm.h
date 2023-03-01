@@ -1,7 +1,7 @@
 #ifndef __CCM_H__
 #define __CCM_H__
 
-#include "analog.h"
+#include "ccm/analog.h"
 
 #define CCGR_CLOSE_MODE 0X00
 #define CCGR_RUN_MODE 0X00

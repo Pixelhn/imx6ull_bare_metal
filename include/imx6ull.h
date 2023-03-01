@@ -8,6 +8,7 @@
 
 #include "driver/gpio.h"
 #include "driver/clk.h"
+#include "driver/epit.h"
 
 
 #endif
