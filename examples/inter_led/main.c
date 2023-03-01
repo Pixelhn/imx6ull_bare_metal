@@ -1,6 +1,7 @@
 #include "board/fire_mini.h"
 #include "imx6ull.h"
 #include "irq_table.h"
+#include "moto.h"
 
 void delay_s(volatile unsigned int n)
 {
@@ -68,13 +69,16 @@ int main()
 
     led_init();
     button_init();
+    moto_init();
 
     while(1)
     {
 
         gpio_write(D7_LED, 0);
-        delay(500);
+        moto_loop();
+        delay(2);
         gpio_write(D7_LED, 1);
-        delay(500);
+        moto_loop();
+        delay(2);
     }
 }

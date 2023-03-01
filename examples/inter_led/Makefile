@@ -12,10 +12,13 @@ main.bin:main.elf
 	$(OBJCOPY) -O binary -S -g $+ $@
 	$(OBJDUMP) -D $+ > $@.dis
 
-main.elf:start.o main.o irq_table.o gpio.o clk.o
+main.elf:start.o main.o moto.o irq_table.o gpio.o clk.o
 	$(LD) -T../../boot/imx6ull.lds $+ -o $@ -Map $@.map
 
-main.o:main.c
+main.o:main.c 
+	$(CC) -g -c $+ -o $@ $(INCLUDR) 
+
+moto.o:moto.c 
 	$(CC) -g -c $+ -o $@ $(INCLUDR) 
 
 irq_table.o:../../lib/irq_table.c
