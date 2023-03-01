@@ -71,6 +71,11 @@ int main()
     button_init();
     moto_init();
 
+
+#define DIV 44000000
+
+    epit_init(20000, 2199);
+
     while(1)
     {
 

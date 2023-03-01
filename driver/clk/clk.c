@@ -52,14 +52,25 @@ int clk_init()
     //PLL3 PFD
     pll3_pfd();
 
-    //ipg_clk_root
-    //pll2_pfd(mux)->(mux)->div3->div2->66Mhz
-    MASK_SET(CCM->CBCMR, CCM_CBCMR_PRE_PERIPH_CLK_SEL, 1); //mux
+    //ipg_clk_root 44Mhz
+    //PLL2[528](mux)->(mux)->div3[176]->div4->44Mhz
+#if 0
+    CCM->CBCMR &= ~(3 << 18);       /* 清除设置*/
+    //CCM->CBCMR |= (0 << 18);      /* pre_periph_clk=PLL2=528MHz */
+    CCM->CBCDR &= ~(1 << 25);       /* periph_clk=pre_periph_clk=528MHz */
+    while(CCM->CDHIPR & (1 << 5));  /* 等待握手完成 */
 
+
+    CCM->CBCDR &= ~(3 << 8); /* CBCDR 的 IPG_PODF 清零 */
+    CCM->CBCDR |= 3 << 8; /* IPG_PODF 4 分频，IPG_CLK_ROOT=66MHz */
+    return 0;
+#else
+    MASK_SET(CCM->CBCMR, CCM_CBCMR_PRE_PERIPH_CLK_SEL, 0); //mux
     MASK_SET(CCM->CBCDR, CCM_CBCDR_PERIPH_CLK_SEL, 0); //mux
 
     MASK_SET(CCM->CBCDR, CCM_CBCDR_AHB_PODF, 2); //div3
-    MASK_SET(CCM->CBCDR, CCM_CBCDR_IPG_PODF, 1); //div2
+    MASK_SET(CCM->CBCDR, CCM_CBCDR_IPG_PODF, 3); //div4
+#endif
 }
 
 void clk_enable()

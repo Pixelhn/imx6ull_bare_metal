@@ -1,7 +1,7 @@
 #ifndef __EPIT_H__
 #define __EPIT_H__
 
-
+int epit_init(unsigned int value, unsigned int frac);
 
 /* ----------------------------------------------------------------------------
    -- EPIT Peripheral Access Layer
