@@ -12,6 +12,7 @@ EPIT_Type *g_epit[3] =
 
 void epit1_irq_handler(IRQn_Type iar, void *private)
 {
+    epit_cb cb = (epit_cb)private;
     if (gpio_read(D5_LED))
     {
         gpio_write(D5_LED, 0);
@@ -20,11 +21,12 @@ void epit1_irq_handler(IRQn_Type iar, void *private)
     {
         gpio_write(D5_LED, 1);
     }
+    cb();
 
     EPIT1->SR |= 1<<0;
 }
 
-int epit_init(unsigned int value, unsigned int frac)
+int epit_init(unsigned int value, unsigned int frac, epit_cb cb)
 {
     EPIT1->CR = 0;
 
@@ -35,7 +37,7 @@ int epit_init(unsigned int value, unsigned int frac)
     struct irq_table_s epit_irq;
 
     epit_irq.irq_handler = epit1_irq_handler;
-    epit_irq.private = 0;
+    epit_irq.private = (void *)cb;
     irq_table_register(EPIT1_IRQn, &epit_irq);
 
     EPIT1->CR |= EPIT_CR_EN(1);

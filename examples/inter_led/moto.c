@@ -50,7 +50,7 @@ uint8_t p8[8] =
 };
 int count = 0;
 
-int moto_loop()
+void moto_loop()
 {
     uint8_t this = p8[count];
     count++;

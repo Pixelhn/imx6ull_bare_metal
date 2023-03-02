@@ -72,18 +72,18 @@ int main()
     moto_init();
 
 
-#define DIV 44000000
+#define DIV 20000
 
-    epit_init(20000, 2199);
+    epit_init(2500, 2199, moto_loop);
 
     while(1)
     {
 
         gpio_write(D7_LED, 0);
-        moto_loop();
-        delay(2);
+        //moto_loop();
+        delay(500);
         gpio_write(D7_LED, 1);
-        moto_loop();
-        delay(2);
+        //moto_loop();
+        delay(500);
     }
 }

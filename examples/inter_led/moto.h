@@ -1,3 +1,5 @@
-int moto_loop();
+
 
 int moto_init();
+
+void moto_loop();
