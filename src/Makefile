@@ -16,7 +16,7 @@ main.bin:main.elf
 	$(OBJCOPY) -O binary -S -g $+ $@
 	$(OBJDUMP) -D $+ > $@.dis
 
-main.elf:start.o main.o moto.o irq_table.o gpio.o clk.o epit.o 
+main.elf:start.o main.o moto.o irq_table.o gpio.o clk.o epit.o uart.o
 	$(LD) -T../boot/imx6ull.lds $+ -o $@ -Map $@.map
 
 main.o:main.c 
@@ -37,6 +37,9 @@ clk.o:../driver/clk/clk.c
 	$(CC) -g -c $+ -o $@ $(INCLUDR) -march=armv7-a
 
 epit.o:../driver/epit/epit.c
+	$(CC) -g -c $+ -o $@ $(INCLUDR) -march=armv7-a
+
+uart.o:../driver/uart/uart.c
 	$(CC) -g -c $+ -o $@ $(INCLUDR) -march=armv7-a
 
 #boot

@@ -1,4 +1,5 @@
 #include "board/fire_mini.h"
+#include "driver/uart.h"
 #include "imx6ull.h"
 #include "irq_table.h"
 #include "moto.h"
@@ -62,7 +63,8 @@ int button_init()
 
 int main()
 {
-    int c=0;
+    char c;
+
     clk_enable();
     clk_init();
     irq_table_init();
@@ -70,6 +72,7 @@ int main()
     led_init();
     button_init();
     moto_init();
+    uart_init();
 
 
 #define DIV 20000
@@ -78,12 +81,10 @@ int main()
 
     while(1)
     {
+        c = uart_getc();
+        uart_putc(c);
 
         gpio_write(D7_LED, 0);
-        //moto_loop();
-        delay(500);
         gpio_write(D7_LED, 1);
-        //moto_loop();
-        delay(500);
     }
 }

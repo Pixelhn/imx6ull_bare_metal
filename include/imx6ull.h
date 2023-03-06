@@ -9,6 +9,7 @@
 #include "driver/gpio.h"
 #include "driver/clk.h"
 #include "driver/epit.h"
+#include "driver/uart.h"
 
 
 #endif
