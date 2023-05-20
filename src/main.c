@@ -77,14 +77,17 @@ int main()
 
 #define DIV 20000
 
-    epit_init(2500, 2199, moto_loop);
+    epit_init(16, 2199, moto_loop);
 
     while(1)
     {
         c = uart_getc();
+        uart_puts("hello: ");
         uart_putc(c);
+        uart_puts("\r\n");
 
         gpio_write(D7_LED, 0);
         gpio_write(D7_LED, 1);
     }
 }
+

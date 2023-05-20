@@ -35,6 +35,12 @@ void uart_softreset(UART_Type *base)
     while((base->UCR2 & 0x1) == 0); /* 等待复位完成 */
 }
 
+void uart_set_brg(int brg, int clk)
+{
+    UART1->UFCR = 0;
+    UART1->UBIR = 0;
+}
+
 int uart_init()
 {
     IOMUXC_SetPinMux(IOMUXC_UART1_TX_DATA_UART1_TX, 0);
@@ -43,6 +49,21 @@ int uart_init()
     IOMUXC_SetPinConfig(IOMUXC_UART1_TX_DATA_UART1_TX, SRE_SLOW | ODE_DISABL | HYS_DISABL | PKE_DISABL | DSE_6_R0_6 | SPEED_100);
     IOMUXC_SetPinConfig(IOMUXC_UART1_RX_DATA_UART1_RX, SRE_SLOW | ODE_DISABL | HYS_DISABL | PKE_DISABL | DSE_6_R0_6 | SPEED_100);
 
+    UART1->UCR1 = 0;
+    UART1->UCR2 = 0;
+
+    while (!(UART1->UCR2 & 1));
+
+    UART1->UCR3 = 0x704 | (1 << 7);
+    UART1->UCR4 = 0x8000;
+    UART1->UESC = 0x2b;
+    UART1->UTIM = 0;
+    UART1->UTS = 0;
+
+
+
+
+    return 0;
     uart_disable(UART1);
     uart_softreset(UART1);
 
@@ -72,8 +93,12 @@ int uart_init()
 
 void uart_putc(unsigned char c)
 {
-    while(((UART1->USR2 >> 3) &0X01) == 0);/* 等待上一次发送完成 */
-    UART1->UTXD = c & 0XFF; /* 发送数据 */
+    if (c == '\n')
+        uart_putc('\r');
+
+    UART1->UTXD = c & 0XFF;
+    while(!(UART1->UTS & (1 << 6)));/* 等待上一次发送完成 */
+
 }
 
 /*
